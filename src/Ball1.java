@@ -3,8 +3,8 @@ import java.awt.Color;
 public class Ball1 {
     private int x = 5;
     private int y = 5;
-    private int width = 20;
-    private int height = 20;
+    private int width = 10;
+    private int height = 10;
     
     int getX(){
         return x;
@@ -29,6 +29,6 @@ public class Ball1 {
     }
     
     Color getColor() {
-    	return Color.ORANGE;
+    	return Color.RED;
     }
 }
