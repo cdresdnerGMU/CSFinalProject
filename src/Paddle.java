@@ -1,10 +1,10 @@
 import java.awt.Color;
 
-public class Ball1 {
+public class Paddle {
     private int x = 5;
     private int y = 5;
-    private int width = 10;
-    private int height = 10;
+    private int width = 60;
+    private int height = 20;
     
     int getX(){
         return x;
@@ -28,6 +28,6 @@ public class Ball1 {
     }
     
     Color getColor() {
-    	return Color.RED;
+    	return Color.BLUE;
     }
 }

@@ -9,9 +9,11 @@ import javax.sound.sampled.Clip;
 public class Block {
     private int x = 5;
     private int y = 5;
-    private int width = 40;
-    private int height = 20;
+    private int width = 60;
+    private int height = 15;
     Clip glass;
+    Color fillColor;
+    int points;
     
     public Block() {
 //    	try {
@@ -25,6 +27,14 @@ public class Block {
 //    	catch (Exception e) {
 //    		e.printStackTrace();
 //    	}
+    }
+    
+    void setFillColor(Color fillColor) {
+    	this.fillColor = fillColor;
+    }
+    
+    void setPoints(int points) {
+    	this.points = points;
     }
     
     int getX(){
@@ -50,7 +60,7 @@ public class Block {
     }
     
     Color getFillColor() {
-    	return Color.CYAN;
+    	return fillColor;
     }
     
     Color getBorderColor() {
