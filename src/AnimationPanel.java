@@ -6,12 +6,12 @@ import javax.swing.JPanel;
 public class AnimationPanel extends JPanel {
 	
     private Ball1 ball1;
-    private Block block;
+    private Block[][] blocks;
     
-    public AnimationPanel(LayoutManager layout, Ball1 ball1, Block block) {
+    public AnimationPanel(LayoutManager layout, Ball1 ball1, Block[][] blocks) {
         super(layout);
         this.ball1 = ball1;
-        this.block = block;
+        this.blocks = blocks;
     }
     
     @Override
@@ -22,8 +22,16 @@ public class AnimationPanel extends JPanel {
         g.setColor(ball1.getColor());
         g.fillOval(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight());
         
-        g.setColor(block.getColor());
-        g.fillRect(block.getX(), block.getY(), block.getWidth(), block.getHeight());
-        
+        for (int i = 0; i < blocks.length; i++) {
+	     
+        	for (int j = 0; j < blocks[i].length; j++) {
+	        		
+		        g.setColor(blocks[i][j].getFillColor());
+		        g.fillRect(blocks[i][j].getX(), blocks[i][j].getY(), blocks[i][j].getWidth(), blocks[i][j].getHeight());
+		        
+		        g.setColor(blocks[i][j].getBorderColor());
+		        g.drawRect(blocks[i][j].getX(), blocks[i][j].getY(), blocks[i][j].getWidth(), blocks[i][j].getHeight());
+        	}
+        }
     }
 }

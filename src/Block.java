@@ -14,17 +14,17 @@ public class Block {
     Clip glass;
     
     public Block() {
-    	try {
-	    	AudioInputStream sample;
-	    	File soundFile = new File("/Users/cdresdner/git/CSFinalProject/GlassBreak.wav");
-	        //URL defaultSound = getClass().getResource("/Users/cdresdner/git/CSFinalProject/bin/GlassBreak.mp3");
-	        sample = AudioSystem.getAudioInputStream(soundFile);
-	        glass = AudioSystem.getClip();
-	        glass.open(sample);
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
+//    	try {
+//	    	AudioInputStream sample;
+//	    	File soundFile = new File("/Users/cdresdner/git/CSFinalProject/GlassBreak.wav");
+//	        //URL defaultSound = getClass().getResource("/Users/cdresdner/git/CSFinalProject/bin/GlassBreak.mp3");
+//	        sample = AudioSystem.getAudioInputStream(soundFile);
+//	        glass = AudioSystem.getClip();
+//	        glass.open(sample);
+//    	}
+//    	catch (Exception e) {
+//    		e.printStackTrace();
+//    	}
     }
     
     int getX(){
@@ -49,8 +49,12 @@ public class Block {
         y = newY;
     }
     
-    Color getColor() {
+    Color getFillColor() {
     	return Color.CYAN;
+    }
+    
+    Color getBorderColor() {
+    	return Color.black;
     }
     
     public void blockHit() {

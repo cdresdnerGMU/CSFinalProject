@@ -9,11 +9,22 @@ public class AnimationMain {
 
     public static void main(String[] args) {
         Ball1 ball1 = new Ball1();
-        Block block = new Block();
-        block .setCoordinates(380, 10);
+        int xPos = -40;
+        int yPos = -20;
+        Block[][] blocks = new Block[6][20];
+        for (int i = 0; i < 6; ++i) {
+        	for (int j = 0; j < 20; ++j) {
+                Block block = new Block();
+                block.setCoordinates(xPos, yPos);
+                xPos += 40;
+                blocks[i][j] = block;
+                //Rectangle r1 = new Rectangle(block.getX(), block.getY(), block.getWidth(), block.getHeight());
+        	}
+        	yPos += 20;
+        	xPos = 0;
+        }
         
-        Rectangle r1 = new Rectangle(block.getX(), block.getY(), block.getWidth(), block.getHeight());
-        AnimationPanel animationPanel = new AnimationPanel(new BorderLayout(), ball1, block);
+        AnimationPanel animationPanel = new AnimationPanel(new BorderLayout(), ball1, blocks);
         
         buildGUI(animationPanel);
         
@@ -21,9 +32,9 @@ public class AnimationMain {
         	ball1.setCoordinates(395, i);
             animationPanel.repaint();
             Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight());
-            if (overlaps(r1, r2)) {
-            	block.blockHit();
-            }
+//            if (overlaps(r1, r2)) {
+//            	block.blockHit();
+//            }
             
             try {
                 Thread.sleep(10);
