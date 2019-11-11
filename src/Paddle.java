@@ -30,4 +30,8 @@ public class Paddle {
     Color getColor() {
     	return Color.BLUE;
     }
+    
+    void setX(int x) {
+    	this.x = x;
+    }
 }

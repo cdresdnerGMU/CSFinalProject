@@ -45,7 +45,7 @@ public class AnimationMain {
         
         buildGUI(animationPanel);
         
-        for (int i = 500; i > 0; i -= 3) {
+        for (int i = 500; i > -10000; i -= 3) {
         	ball1.setCoordinates(395, i);
             animationPanel.repaint();
             Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight());
