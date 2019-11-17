@@ -4,9 +4,11 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * This class is a swing panel that is used to paint various game components
@@ -15,7 +17,7 @@ import javax.swing.JPanel;
  * @author cdresdner
  *
  */
-public class AnimationPanel extends JPanel implements MouseMotionListener {
+public class AnimationPanel extends JPanel implements MouseListener, MouseMotionListener {
 	
     private Ball1 ball1; //The primary ball (more balls may be added for power-ups)
     private Block[][] blocks; //2D array of blocks
@@ -25,6 +27,7 @@ public class AnimationPanel extends JPanel implements MouseMotionListener {
     private int score = 0; //The player's accumulated score
     private int lives = 3; //The player's remaining lives
     private int level = 1; //The current level
+    private Game game;
     
     /**
      * Constructs a new animation panel for the game
@@ -36,7 +39,7 @@ public class AnimationPanel extends JPanel implements MouseMotionListener {
      * @param paddle - The paddle which is moved using the mouse
      */
     public AnimationPanel(LayoutManager layout, int screenWidth, int screenHeight,
-    		Ball1 ball1, Block[][] blocks, Paddle paddle) {
+    		Ball1 ball1, Block[][] blocks, Paddle paddle, Game game) {
     	
         super(layout);
         this.ball1 = ball1;
@@ -44,7 +47,9 @@ public class AnimationPanel extends JPanel implements MouseMotionListener {
         this.paddle = paddle;
         this.screenWidth  = screenWidth;
         this.screenHeight = screenHeight;
+        this.game = game;
         super.addMouseMotionListener(this);
+        super.addMouseListener(this);
     }
     
     /**
@@ -89,13 +94,6 @@ public class AnimationPanel extends JPanel implements MouseMotionListener {
         
     }
 
-    /**
-     * This method is not used. No need to detect mouse drag
-     */
-	@Override
-	public void mouseDragged(MouseEvent e) {
-	}
-
 	/**
 	 * This method detects when the mouse is moved and allows the paddle to follow its movements
 	 * The paddle is only moved horizontally; y will not change
@@ -119,4 +117,53 @@ public class AnimationPanel extends JPanel implements MouseMotionListener {
         paddle.setX((int) pos); //Sets the left edge of the paddle
 
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+        SwingUtilities.invokeLater(
+        		new Runnable() {
+        			@Override
+        			public void run() { //Sets the data for the frame
+        				game.startGame();
+                    }
+                }
+        );
+	}
+
+    /**
+     * This method is not used. No need to detect
+     */
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+    /**
+     * This method is not used. No need to detect
+     */
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+    /**
+     * This method is not used. No need to detect
+     */
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+    /**
+     * This method is not used. No need to detect
+     */
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+	
+    /**
+     * This method is not used. No need to detect
+     */
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+	
 }
