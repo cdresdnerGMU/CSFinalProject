@@ -1,0 +1,22 @@
+Progress
+
+-Started with Java Swing. All components will be directly painted onto the screen
+-Programmed a GUI to display the game
+-Added a ball that moves up in a straight line
+-Added a block that disappears when struck and a sound effect that plays when a block 
+is struck
+-Added a loop that creates a wall of blocks
+-Resized and rearranged bricks, added color and point values to bricks, added a paddle
+-Added MouseMotionListener for paddle movement. Added text for score, level, and lives
+-Added comments and checked block breaking on all blocks
+-Refactored  the main class into a game class and added the ability for the ball to
+reverse direction after breaking a block
+-Started the ball moving at an angle
+-Added the ability for the ball to reflect off the left and right wall at a reflected
+angle
+
+As we continue to progress, we will work on having the ball bounce off the panel and
+the ceiling, changing the angle of the ball depending on where it hits a block, adding 
+lives, adding levels, properly accumulating scores, and adding additional sound effects.
+
+We may also work on adding powerups that the player can attain.
