@@ -130,14 +130,26 @@ public class Game implements Runnable {
 		int lineY = paddle.getY() + paddle.getHeight() + 20;
 		
 		int ballYPos = paddle.getY() - 20;
-        int ballDir = 1;
+		int ballXPos = paddle.getX() - 20;
+		// i made two different dirs for X and Y b/c if it hits a wall, the Xdir will change but Ydir shouldn't..
+		// but if it hits top, both dir should change? maybe theres a better way to do this.
+        int ballDirX = 1;
+        int ballDirY = 1;
+        int maxX = SCREEN_WIDTH;
         //Initial loop to generate ball movement (Temporary; this just moves the ball in a straight line)
         //for (int i = ballStartPos; i > -10000; i -= 3) { 
         
         while (gameIsRunning) {
-        	ballYPos -= (3  * ballDir);
-        	//Still need to 
-        	ball1.setCoordinates(395, ballYPos);
+			ballYPos -= (3 * ballDirY); // since the top is 0, we have to decrement (It's weird)
+			ballXPos += (3 * ballDirX);// moving the ball in
+			ball1.setCoordinates(395, ballYPos);
+			ball1.setCoordinates(ballXPos, ballYPos);// always start the ball at an angle.
+			if (ball1.getX() >= maxX) { //if it hits the right most wall, the dirX should change
+				ballDirX *= -1;
+			}
+			if(ball1.getX() <= 0) {//most left wall
+				ballDirX *= -1;
+			}
             animationPanel.repaint();
             Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight());
             
@@ -162,7 +174,8 @@ public class Game implements Runnable {
             	
             	
             	if (blockHit) {
-            		ballDir *= -1;
+            		ballDirX *= -1;
+            		ballDirY *= -1;
             		break;
             	}
             	
