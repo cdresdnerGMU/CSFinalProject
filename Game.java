@@ -23,6 +23,17 @@ public class Game implements Runnable {
 	private Ball1 ball1;
 	private AnimationPanel animationPanel;
 	private Block[][] blocks;
+	private static int lives = 3;
+	
+	public static int getLives() {
+		return lives;
+	}
+
+	public static int getScore() {
+		return score;
+	}
+
+	private static int score = 0;
 	
 	private Thread t = new Thread(this);
 	private Boolean gameIsRunning = false;
@@ -150,10 +161,16 @@ public class Game implements Runnable {
 			if(ball1.getX() <= 0) {//most left wall
 				ballDirX *= -1;
 			}
+
             animationPanel.repaint();
-            Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight());
+            Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight()); //ball hitbox
+            Rectangle paddleHitbox = new Rectangle(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
+            if (touches(paddleHitbox, r2)) {
+            	ballDirY *= -1;
+            }
             
             if (ball1.getY() >= lineY) {
+            	lives -= 1;
             	gameIsRunning = false;
             	break;
             }
@@ -165,18 +182,11 @@ public class Game implements Runnable {
             		Block block = blocks[j][k];
             		Rectangle r1 = new Rectangle(block.getX(), block.getY(), block.getWidth(), block.getHeight());
                     if (touches(r1, r2)) {
-                    	block.blockHit();
-                    	blockHit = true;
-                    	break;
+                    	ballDirX *= -1;
+                		ballDirY *= -1;
+                		score += 5;
+                		block.blockHit();
                     }
-            	}
-            	
-            	
-            	
-            	if (blockHit) {
-            		ballDirX *= -1;
-            		ballDirY *= -1;
-            		break;
             	}
             	
             }
