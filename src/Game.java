@@ -23,20 +23,18 @@ public class Game implements Runnable {
 	private Ball1 ball1;
 	private AnimationPanel animationPanel;
 	private Block[][] blocks;
-	private static int lives = 3;
 	
-	public static int getLives() {
-		return lives;
-	}
-
-	public static int getScore() {
-		return score;
-	}
-
-	private static int score = 0;
+	private int lives = 3;
+	private int score = 0;
+	
+	int ballDirY = 1;
+	int ballYPos;
+	int ballXPos;
 	
 	private Thread t = new Thread(this);
-	private Boolean gameIsRunning = false;
+	
+	private boolean gameIsRunning;
+	private boolean inPlay;
 	
 	public Game() {
 		
@@ -92,7 +90,7 @@ public class Game implements Runnable {
      * Embeds the animation panel inside of a swing frame
      * @param animationPanel
      */
-    public static void buildGUI(AnimationPanel animationPanel) {
+    public void buildGUI(AnimationPanel animationPanel) {
         JFrame frame = new JFrame("Breakout"); //Sets the title for the frame
         SwingUtilities.invokeLater(
                 new Runnable() {
@@ -114,7 +112,7 @@ public class Game implements Runnable {
      * @param rBall - rectangle for the ball (hitbox)
      * @return
      */
-    private static boolean touches(Rectangle rBlock, Rectangle rBall) {
+    private boolean touches(Rectangle rBlock, Rectangle rBall) {
         if ((rBall.x <= rBlock.x + rBlock.width) && (rBall.x + rBall.width >= rBlock.x) && 
         		(rBall.y < rBlock.y + rBlock.height) && (rBall.y + rBall.height >= rBlock.y)) {
         	return true;
@@ -130,66 +128,87 @@ public class Game implements Runnable {
     
     public void startGame() {
     	
+		ballYPos = paddle.getY() - 20;
+		ballXPos = paddle.getX() - 20;
+		
+		ballDirY = 1;
+    	
+    	if (!gameIsRunning) {
+    		t.start();
+    	}
     	gameIsRunning = true;
-    	t.start();
+    	this.inPlay = true;
+    	
         
     }
 
+    public boolean inPlay() {
+    	return inPlay;
+    }
+    
 	@Override
 	public void run() {
 		
 		int lineY = paddle.getY() + paddle.getHeight() + 20;
 		
-		int ballYPos = paddle.getY() - 20;
-		int ballXPos = paddle.getX() - 20;
+
 		// i made two different dirs for X and Y b/c if it hits a wall, the Xdir will change but Ydir shouldn't..
 		// but if it hits top, both dir should change? maybe theres a better way to do this.
         int ballDirX = 1;
-        int ballDirY = 1;
         int maxX = SCREEN_WIDTH;
         //Initial loop to generate ball movement (Temporary; this just moves the ball in a straight line)
         //for (int i = ballStartPos; i > -10000; i -= 3) { 
         
         while (gameIsRunning) {
-			ballYPos -= (3 * ballDirY); // since the top is 0, we have to decrement (It's weird)
-			ballXPos += (3 * ballDirX);// moving the ball in
-			ball1.setCoordinates(395, ballYPos);
-			ball1.setCoordinates(ballXPos, ballYPos);// always start the ball at an angle.
-			if (ball1.getX() >= maxX) { //if it hits the right most wall, the dirX should change
-				ballDirX *= -1;
-			}
-			if(ball1.getX() <= 0) {//most left wall
-				ballDirX *= -1;
-			}
-
-            animationPanel.repaint();
-            Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight()); //ball hitbox
-            Rectangle paddleHitbox = new Rectangle(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
-            if (touches(paddleHitbox, r2)) {
-            	ballDirY *= -1;
-            }
-            
-            if (ball1.getY() >= lineY) {
-            	lives -= 1;
-            	gameIsRunning = false;
-            	break;
-            }
-            
-            boolean blockHit = false;
-            
-            for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
-            	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
-            		Block block = blocks[j][k];
-            		Rectangle r1 = new Rectangle(block.getX(), block.getY(), block.getWidth(), block.getHeight());
-                    if (touches(r1, r2)) {
-                    	ballDirX *= -1;
-                		ballDirY *= -1;
-                		score += 5;
-                		block.blockHit();
-                    }
-            	}
-            	
-            }
+        	
+        	if (this.inPlay) {
+	        		
+				ballYPos -= (3 * ballDirY); // since the top is 0, we have to decrement (It's weird)
+				ballXPos += (3 * ballDirX);// moving the ball in
+				ball1.setCoordinates(395, ballYPos);
+				ball1.setCoordinates(ballXPos, ballYPos);// always start the ball at an angle.
+				if (ball1.getX() >= maxX) { //if it hits the right most wall, the dirX should change
+					ballDirX *= -1;
+				}
+				if(ball1.getX() <= 0) {//most left wall
+					ballDirX *= -1;
+				}
+	
+	            
+	            Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight()); //ball hitbox
+	            Rectangle paddleHitbox = new Rectangle(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
+	            if (touches(paddleHitbox, r2)) {
+	            	ballDirY *= -1;
+	            }
+	            
+	            if (ball1.getY() >= lineY) {
+	            	lives -= 1;
+	            	this.inPlay = false;
+	            	ball1.setCoordinates(-15, -15);
+	            	
+	            	if (lives == 0) {
+	            		break;
+	            	}
+	            }
+	            
+	            boolean blockHit = false;
+	            
+	            for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
+	            	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
+	            		Block block = blocks[j][k];
+	            		Rectangle r1 = new Rectangle(block.getX(), block.getY(), block.getWidth(), block.getHeight());
+	                    if (touches(r1, r2)) {
+	                    	ballDirX *= -1;
+	                		ballDirY *= -1;
+	                		score += 5;
+	                		block.blockHit();
+	                    }
+	            	}
+	            	
+	            }
+        	}
+        	
+        	animationPanel.repaint();
 
             try {
                 Thread.sleep(10); //Repaints the panel every 10 milliseconds
@@ -197,7 +216,14 @@ public class Game implements Runnable {
                 interruptedException.printStackTrace(); //Throws an interrupted exception (this should not happen)
             }
         }
-    	
+    	int i = 0;
 	}
 	
+	public int getLives() {
+		return lives;
+	}
+
+	public int getScore() {
+		return score;
+	}
 }

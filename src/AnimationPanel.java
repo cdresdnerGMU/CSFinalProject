@@ -83,10 +83,10 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
         
         g.setFont(new Font("TimesRoman", Font.PLAIN, 24)); //Set the font for the score
         g.drawString("Score: ", 650, lineY + 33); //Draw the word "Score: "
-        g.drawString(Integer.toString(Game.getScore()), 715, lineY + 34); //Draw the score value
+        g.drawString(Integer.toString(game.getScore()), 715, lineY + 34); //Draw the score value
         g.setFont(new Font("TimesRoman", Font.PLAIN, 16)); //Set the font for the lives remaining
         g.drawString("Lives: ", 10, lineY + 33); //Draw the word "Lives: "
-        g.drawString(Integer.toString(Game.getLives()), 60, lineY + 33); //Draw the amount of lives remaining
+        g.drawString(Integer.toString(game.getLives()), 60, lineY + 33); //Draw the amount of lives remaining
         g.drawString("Level: ", 120, lineY + 33); //Draw the word "Level: "
         g.drawString(Integer.toString(level), 170, lineY + 33); //Draw the current level
         
@@ -119,14 +119,10 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-        SwingUtilities.invokeLater(
-        		new Runnable() {
-        			@Override
-        			public void run() { //Sets the data for the frame
-        				game.startGame();
-                    }
-                }
-        );
+		if (!game.inPlay()) {
+			game.startGame();
+		}
+		
 	}
 
     /**
