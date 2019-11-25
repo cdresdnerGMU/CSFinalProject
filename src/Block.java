@@ -61,8 +61,8 @@ public class Block {
     }
     
     public void playGlassBreak() {
-        //glass.stop();
-        //glass.setFramePosition(0);
-        //glass.start(); 
+        glass.stop();
+        glass.setFramePosition(0);
+        glass.start(); 
     }
 }

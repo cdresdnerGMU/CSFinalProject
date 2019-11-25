@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -36,14 +37,25 @@ public class Game implements Runnable {
 	private boolean gameIsRunning;
 	private boolean inPlay;
 	
+	private JFrame frame;
+	
 	public Game() {
 		
     	Clip glass = null;
     	
+        String glassBreakPath = this.getClass().getResource("GlassBreak.wav").getPath();
+        String osName = System.getProperty("os.name");
+        System.out.println(osName);
+        if (osName.toLowerCase().indexOf("win") > -1) {
+            if (glassBreakPath.startsWith("/")) {
+                glassBreakPath = glassBreakPath.substring(1);
+            }
+            glassBreakPath = glassBreakPath.replace("/", "\\");
+        }
+    	
     	try {
 	    	AudioInputStream sample;
-	    	File soundFile = new File("/Users/cdresdner/git/CSFinalProject/GlassBreak.wav");
-	        //URL defaultSound = getClass().getResource("/Users/cdresdner/git/CSFinalProject/bin/GlassBreak.mp3");
+	    	File soundFile = new File(glassBreakPath);
 	        sample = AudioSystem.getAudioInputStream(soundFile);
 	        glass = AudioSystem.getClip();
 	        glass.open(sample);
@@ -91,7 +103,7 @@ public class Game implements Runnable {
      * @param animationPanel
      */
     public void buildGUI(AnimationPanel animationPanel) {
-        JFrame frame = new JFrame("Breakout"); //Sets the title for the frame
+        frame = new JFrame("Breakout"); //Sets the title for the frame
         SwingUtilities.invokeLater(
                 new Runnable() {
                     @Override
@@ -129,7 +141,7 @@ public class Game implements Runnable {
     public void startGame() {
     	
 		ballYPos = paddle.getY() - 20;
-		ballXPos = paddle.getX() - 20;
+		ballXPos = paddle.getX() + (paddle.getWidth() / 2);
 		
 		ballDirY = 1;
     	
@@ -177,7 +189,11 @@ public class Game implements Runnable {
 	            
 	            Rectangle r2 = new Rectangle(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight()); //ball hitbox
 	            Rectangle paddleHitbox = new Rectangle(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight());
-	            if (touches(paddleHitbox, r2)) {
+	            if (touches(paddleHitbox, r2)) { //Ball reverses direction when it hits the paddle
+	            	ballDirY *= -1;
+	            }
+	            
+	            if (ballYPos <= 0) { //Ball reverses direction when it hits the ceiling
 	            	ballDirY *= -1;
 	            }
 	            
@@ -216,7 +232,18 @@ public class Game implements Runnable {
                 interruptedException.printStackTrace(); //Throws an interrupted exception (this should not happen)
             }
         }
-    	int i = 0;
+      //default icon, custom title
+        int n = JOptionPane.showConfirmDialog(
+            frame,
+            "Would you like to play again?",
+            "Game Over",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (n == JOptionPane.YES_OPTION) {
+        	
+        }
+        else {
+        	System.exit(0);
+        }
 	}
 	
 	public int getLives() {
