@@ -59,26 +59,26 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
         super.paintComponent(g);
         
         g.setColor(paddle.getColor()); //Set the color for the paddle
-        g.fillRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight()); //Fill a rectangle to create the paddle using the color set above
+        g.fillRect((int)paddle.getX(), (int)paddle.getY(), (int)paddle.getWidth(), (int)paddle.getHeight()); //Fill a rectangle to create the paddle using the color set above
         
         g.setColor(ball1.getColor()); //Set the color for the ball
-        g.fillOval(ball1.getX(), ball1.getY(), ball1.getWidth(), ball1.getHeight()); //Fill an oval (circle) to create the ball using the color set above
+        g.fillOval((int)ball1.getX(), (int)ball1.getY(), (int)ball1.getWidth(), (int)ball1.getHeight()); //Fill an oval (circle) to create the ball using the color set above
         
         for (int i = 0; i < blocks.length; i++) { //Loop through each row of blocks
 	     
         	for (int j = 0; j < blocks[i].length; j++) { //Loop through each column of blocks
 	        		
 		        g.setColor(blocks[i][j].getFillColor());  //Set the fill color for each block
-		        g.fillRect(blocks[i][j].getX(), blocks[i][j].getY(), blocks[i][j].getWidth(), blocks[i][j].getHeight()); //Fill a rectangle to create each block using the color set above
+		        g.fillRect((int)blocks[i][j].getX(), (int)blocks[i][j].getY(), (int)blocks[i][j].getWidth(), (int)blocks[i][j].getHeight()); //Fill a rectangle to create each block using the color set above
 		        
 		        g.setColor(blocks[i][j].getBorderColor()); //Set the border color for each block
-		        g.drawRect(blocks[i][j].getX(), blocks[i][j].getY(), blocks[i][j].getWidth(), blocks[i][j].getHeight()); //Draw a rectangular border to create a border for each block using the color set above
+		        g.drawRect((int)blocks[i][j].getX(), (int)blocks[i][j].getY(), (int)blocks[i][j].getWidth(), (int)blocks[i][j].getHeight()); //Draw a rectangular border to create a border for each block using the color set above
         	}
         }
         
         //Draw a horizontal line just below the paddle
         g.setColor(Color.BLACK); //Set the line's color to black
-        int  lineY = paddle.getY() + paddle.getHeight() + 20; //Draw the line 20 pixels below the  paddle
+        int lineY = (int)(paddle.getY() + paddle.getHeight() + 20); //Draw the line 20 pixels below the  paddle
         g.drawLine(0, lineY, screenWidth, lineY);
         
         g.setFont(new Font("TimesRoman", Font.PLAIN, 24)); //Set the font for the score

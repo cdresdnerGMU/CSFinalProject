@@ -1,11 +1,11 @@
 import java.awt.Color;
 import javax.sound.sampled.Clip;
 
-public class Block {
-    private int x = 5;
-    private int y = 5;
-    private int width = 60;
-    private int height = 15;
+public class Block implements GameObject {
+    private double x = 5;
+    private double y = 5;
+    private double width = 60;
+    private double height = 15;
     Clip glass;
     Color fillColor;
     int points;
@@ -22,24 +22,24 @@ public class Block {
     	this.points = points;
     }
     
-    int getX(){
+    public double getX(){
         return x;
     }
     
-    int getY(){
+    public double getY(){
         return y;
     }
     
-    int getWidth(){
+    public double getWidth(){
         return width;
     }
     
-    int getHeight(){
+    public double getHeight(){
         return height;
     }
     
     // SETTERS
-    void setCoordinates(int newX, int newY){
+    void setCoordinates(double newX, double newY){
         x = newX;
         y = newY;
     }

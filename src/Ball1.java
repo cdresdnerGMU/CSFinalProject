@@ -1,28 +1,28 @@
 import java.awt.Color;
 
-public class Ball1 {
-    private int x = -15;
-    private int y = -15;
-    private int width = 10;
-    private int height = 10;
+public class Ball1 implements GameObject {
+    private double x = -15;
+    private double y = -15;
+    private double width = 10;
+    private double height = 10;
     
-    int getX(){
+    public double getX(){
         return x;
     }
     
-    int getY(){
+    public double getY(){
         return y;
     }
     
-    int getWidth(){
+    public double getWidth(){
         return width;
     }
     
-    int getHeight(){
+    public double getHeight(){
         return height;
     }
     
-    void setCoordinates(int newX, int newY){
+    void setCoordinates(double newX, double newY){
         x = newX;
         y = newY;
     }

@@ -1,28 +1,28 @@
 import java.awt.Color;
 
-public class Paddle {
-    private int x = 5;
-    private int y = 5;
-    private int width = 60;
-    private int height = 20;
+public class Paddle implements GameObject {
+    private double x = 5;
+    private double y = 5;
+    private double width = 60;
+    private double height = 20;
     
-    int getX(){
+    public double getX(){
         return x;
     }
     
-    int getY(){
+    public double getY(){
         return y;
     }
     
-    int getWidth(){
+    public double getWidth(){
         return width;
     }
     
-    int getHeight(){
+    public double getHeight(){
         return height;
     }
     
-    void setCoordinates(int newX, int newY){
+    void setCoordinates(double newX, double newY){
         x = newX;
         y = newY;
     }
@@ -31,7 +31,7 @@ public class Paddle {
     	return Color.BLUE;
     }
     
-    void setX(int x) {
+    void setX(double x) {
     	this.x = x;
     }
 }
