@@ -15,6 +15,7 @@ public class Game implements Runnable {
 	
 	private static final int SCREEN_WIDTH = 840; //The width of the screen
 	private static final int SCREEN_HEIGHT = 700; //The height of the screen
+	private static final int EXTRA_LIFE = 500;
 	
 	private static final Color[] ROW_COLORS = new Color[] {Color.RED, Color.RED, Color.ORANGE, Color.ORANGE, //The colors of every two rows of blocks
 			Color.GREEN, Color.GREEN, Color.YELLOW, Color.YELLOW};
