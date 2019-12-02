@@ -23,6 +23,10 @@ public class Block implements GameObject {
     	this.points = points;
     }
     
+    public int getPoints() {
+    	return points;
+    }
+    
     public double getX(){
         return x;
     }
@@ -54,10 +58,6 @@ public class Block implements GameObject {
     }
     
     public void blockHit() {
-//    	this.width = 0;
-//    	this.height = 0;
-//    	this.x = 0;
-//    	this.y = 0;
     	blockHit = true;
     	playGlassBreak();
     }

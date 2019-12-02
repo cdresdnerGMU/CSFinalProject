@@ -31,6 +31,8 @@ public class Game implements Runnable {
 	private int score = 0;
 	private int level = 0;
 	
+	private int temp_score = 0;
+	
 	double ballDirY = 1.0;
 	double ballDirX = 1.0;
 	double ballYPos;
@@ -237,8 +239,9 @@ public class Game implements Runnable {
 	            	}
 	            }
 			
-		    if(getScore == EXTRA_LIVES)
-			lives++;
+		    if (score == EXTRA_LIFE) {
+		    	lives++;
+		    }
 	            
 	            for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
 	            	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
@@ -253,7 +256,16 @@ public class Game implements Runnable {
 		    	            	else {
 		    	            		ballDirY = 1;
 		    	            	}
-		                		score += 5;
+		    	            	
+		                		score += block.getPoints();
+		                		temp_score += block.getPoints();
+
+		    	            	if (temp_score >= EXTRA_LIFE){
+		    	            		lives += 1; //every time the temp_score reaches 500, the lives is incremented by 1
+		    	            		temp_score = temp_score - EXTRA_LIFE; //set back to 0
+
+								}
+
 		                		block.blockHit();
 		                		blockCount -= 1;
 		                		if (blockCount <= 0) {
