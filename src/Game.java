@@ -15,6 +15,7 @@ public class Game implements Runnable {
 	
 	private static final int SCREEN_WIDTH = 840; //The width of the screen
 	private static final int SCREEN_HEIGHT = 700; //The height of the screen
+	private static final int EXTRA_LIFE = 500;
 	
 	private static final Color[] ROW_COLORS = new Color[] {Color.RED, Color.RED, Color.ORANGE, Color.ORANGE, //The colors of every two rows of blocks
 			Color.GREEN, Color.GREEN, Color.YELLOW, Color.YELLOW};
@@ -141,6 +142,12 @@ public class Game implements Runnable {
         }
     }
     
+     /**
+     * This method determines whether the ball has made contact with the bottom of a block
+     * @param rBlock - rectangle for the block
+     * @param rBall - rectangle for the ball (hitbox)
+     * @return
+     */
     private boolean touchesBottom(Rectangle rBlock, Rectangle rBall) {
     	int rHeight = (int) (rBlock.getHeight() / 2);
     	Rectangle bottomHalf = new Rectangle((int)rBlock.getX(), (int)rBlock.getY() + rHeight, (int)rBlock.getWidth(), rHeight);
@@ -156,7 +163,9 @@ public class Game implements Runnable {
     public boolean gameIsRunning() {
     	return gameIsRunning;
     }
-    
+	
+    /** Method that sets up the game and starts it
+    **/
     public void startGame() {
     	
     	ballAngleX = 3;
@@ -218,7 +227,7 @@ public class Game implements Runnable {
 	            	ballDirY = -1;
 	            }
 	            
-	            if (ball1.getY() >= lineY) {
+	            if (ball1.getY() >= lineY) { //Ball will reset to its default position and lives will be decremented when it hits the bottom of the screen
 	            	lives -= 1;
 	            	this.inPlay = false;
 	            	ball1.setCoordinates(-15, -15);
@@ -227,6 +236,9 @@ public class Game implements Runnable {
 	            		break;
 	            	}
 	            }
+			
+		    if(getScore == EXTRA_LIVES)
+			lives++;
 	            
 	            for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
 	            	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
