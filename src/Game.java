@@ -244,9 +244,6 @@ public class Game implements Runnable {
 		                		score += 5;
 		                		block.blockHit();
 		                		blockCount -= 1;
-		                		if (blockCount <= 109) {
-		                			blockCount = 0;
-		                		}
 		                		if (blockCount <= 0) {
 		                			nextLevel();
 		                		}
