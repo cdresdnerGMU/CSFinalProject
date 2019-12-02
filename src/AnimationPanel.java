@@ -50,6 +50,10 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
         super.addMouseListener(this);
     }
     
+    public void setLevel(int level) {
+    	this.level = level;
+    }
+    
     /**
      * This method paints all components of the game
      * @param g - The graphics class passed in by the super class
@@ -67,12 +71,16 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
         for (int i = 0; i < blocks.length; i++) { //Loop through each row of blocks
 	     
         	for (int j = 0; j < blocks[i].length; j++) { //Loop through each column of blocks
-	        		
-		        g.setColor(blocks[i][j].getFillColor());  //Set the fill color for each block
-		        g.fillRect((int)blocks[i][j].getX(), (int)blocks[i][j].getY(), (int)blocks[i][j].getWidth(), (int)blocks[i][j].getHeight()); //Fill a rectangle to create each block using the color set above
-		        
-		        g.setColor(blocks[i][j].getBorderColor()); //Set the border color for each block
-		        g.drawRect((int)blocks[i][j].getX(), (int)blocks[i][j].getY(), (int)blocks[i][j].getWidth(), (int)blocks[i][j].getHeight()); //Draw a rectangular border to create a border for each block using the color set above
+	        	
+        		if (!blocks[i][j].blockWasHit()) {
+        		
+			        g.setColor(blocks[i][j].getFillColor());  //Set the fill color for each block
+			        g.fillRect((int)blocks[i][j].getX(), (int)blocks[i][j].getY(), (int)blocks[i][j].getWidth(), (int)blocks[i][j].getHeight()); //Fill a rectangle to create each block using the color set above
+			        
+			        g.setColor(blocks[i][j].getBorderColor()); //Set the border color for each block
+			        g.drawRect((int)blocks[i][j].getX(), (int)blocks[i][j].getY(), (int)blocks[i][j].getWidth(), (int)blocks[i][j].getHeight()); //Draw a rectangular border to create a border for each block using the color set above
+        		
+        		}
         	}
         }
         

@@ -24,9 +24,11 @@ public class Game implements Runnable {
 	private Ball1 ball1;
 	private AnimationPanel animationPanel;
 	private Block[][] blocks;
+	private int blockCount;
 	
 	private int lives = 3;
 	private int score = 0;
+	private int level = 0;
 	
 	double ballDirY = 1.0;
 	double ballDirX = 1.0;
@@ -98,6 +100,8 @@ public class Game implements Runnable {
        
         //Build the user interface framework
         buildGUI(animationPanel);
+        
+        nextLevel();
 		
 	}
 	
@@ -227,19 +231,27 @@ public class Game implements Runnable {
 	            for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
 	            	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
 	            		Block block = blocks[j][k];
-	            		Rectangle r1 = new Rectangle((int)block.getX(), (int)block.getY(), (int)block.getWidth(), (int)block.getHeight());
-	                    if (touches(r1, r2)) {
-//	                    	ballDirX *= -1;
-	    	            	changeBallAngle(ball1, block);
-	    	            	if (touchesBottom(r1, r2)) {
-	    	            		ballDirY = -1; 
-	    	            	}
-	    	            	else {
-	    	            		ballDirY = 1;
-	    	            	}
-	                		score += 5;
-	                		block.blockHit();
-	                    }
+	            		if (!block.blockWasHit()) {
+		            		Rectangle r1 = new Rectangle((int)block.getX(), (int)block.getY(), (int)block.getWidth(), (int)block.getHeight());
+		                    if (touches(r1, r2)) {
+		    	            	changeBallAngle(ball1, block);
+		    	            	if (touchesBottom(r1, r2)) {
+		    	            		ballDirY = -1; 
+		    	            	}
+		    	            	else {
+		    	            		ballDirY = 1;
+		    	            	}
+		                		score += 5;
+		                		block.blockHit();
+		                		blockCount -= 1;
+		                		if (blockCount <= 109) {
+		                			blockCount = 0;
+		                		}
+		                		if (blockCount <= 0) {
+		                			nextLevel();
+		                		}
+		                    }
+	            		}
 	            	}
 	            	
 	            }
@@ -312,14 +324,18 @@ public class Game implements Runnable {
 		}
 	}
 	
-//	private void changeBallAngle(Ball1 ball1) {
-//		var relativeIntersectY = (paddle1Y+(PADDLEHEIGHT/2)) - intersectY;
-//		var normalizedRelativeIntersectionY = (relativeIntersectY/(PADDLEHEIGHT/2));
-//		var bounceAngle = normalizedRelativeIntersectionY * MAXBOUNCEANGLE;
-//		
-//		ballVx = BALLSPEED*Math.cos(bounceAngle);
-//		ballVy = BALLSPEED*-Math.sin(bounceAngle);
-//
-//	}
+	private void nextLevel() {
+		this.inPlay = false;
+    	ball1.setCoordinates(-15, -15);
+		level += 1;
+		animationPanel.setLevel(level);
+        for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
+        	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
+        		Block block = blocks[j][k];
+        		block.clearBlockHit();
+        	}
+        }
+        blockCount = 112;
+	}
 	
 }

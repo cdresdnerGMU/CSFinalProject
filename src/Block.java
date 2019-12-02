@@ -6,6 +6,7 @@ public class Block implements GameObject {
     private double y = 5;
     private double width = 60;
     private double height = 15;
+    private boolean blockHit;
     Clip glass;
     Color fillColor;
     int points;
@@ -53,11 +54,20 @@ public class Block implements GameObject {
     }
     
     public void blockHit() {
-    	this.width = 0;
-    	this.height = 0;
-    	this.x = 0;
-    	this.y = 0;
+//    	this.width = 0;
+//    	this.height = 0;
+//    	this.x = 0;
+//    	this.y = 0;
+    	blockHit = true;
     	playGlassBreak();
+    }
+    
+    public boolean blockWasHit() {
+    	return blockHit;
+    }
+    
+    public void clearBlockHit() {
+    	blockHit = false;
     }
     
     public void playGlassBreak() {
