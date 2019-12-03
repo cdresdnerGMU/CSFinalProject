@@ -235,7 +235,18 @@ public class Game implements Runnable {
 	            	ball1.setCoordinates(-15, -15);
 	            	
 	            	if (lives == 0) {
-	            		break;
+	            	      //default icon, custom title
+	                    int n = JOptionPane.showConfirmDialog(
+	                        frame,
+	                        "Would you like to play again?",
+	                        "Game Over",
+	                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+	                    if (n == JOptionPane.YES_OPTION) {
+	                    	newGame();
+	                    }
+	                    else {
+	                    	System.exit(0);
+	                    }
 	            	}
 	            }
 			
@@ -286,18 +297,7 @@ public class Game implements Runnable {
                 interruptedException.printStackTrace(); //Throws an interrupted exception (this should not happen)
             }
         }
-      //default icon, custom title
-        int n = JOptionPane.showConfirmDialog(
-            frame,
-            "Would you like to play again?",
-            "Game Over",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (n == JOptionPane.YES_OPTION) {
-        	
-        }
-        else {
-        	System.exit(0);
-        }
+
 	}
 	
 	public int getLives() {
@@ -354,6 +354,14 @@ public class Game implements Runnable {
         	}
         }
         blockCount = 112;
+	}
+	
+	private void newGame() {
+		level = 0;
+		score = 0;
+		lives = 3;
+		temp_score = 0;
+		nextLevel();
 	}
 	
 }
