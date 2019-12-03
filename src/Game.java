@@ -308,39 +308,39 @@ public class Game implements Runnable {
 		return score;
 	}
 	
-	 private void changeBallAngle(Ball1 ball1, GameObject gameObj) {
-	        double ballCenter = ball1.getX() + (ball1.getWidth() / 2);
-	        double paddleCenter = gameObj.getX() + (gameObj.getWidth() / 2);
-	        double paddleWidth = gameObj.getWidth();
-	        double paddleHalf = paddleWidth / 2.0;
-	        double paddleQuarter = paddleWidth / 4.0;
-	        double paddleFiveFourths = paddleQuarter * 5;
-	        double ballOnPaddlePos = ballCenter - gameObj.getX();
-	       
-	        if (ballOnPaddlePos < 0) {
-	            ballOnPaddlePos = 0;
-	        }
-	        if (ballOnPaddlePos > paddleWidth) {
-	            ballOnPaddlePos = paddleWidth;
-	        }
-	       
-	        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2);
-	       
-	        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter);
-	       
-	        if (ballCenter <= paddleCenter) {
-	            if (!(gameObj instanceof Block)) {
-	                ballDirX = -1;
-	            }
-	            ballAngleY = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
-	        }
-	        else {
-	            if (!(gameObj instanceof Block)) {
-	                ballDirX = 1;
-	            }
-	            ballAngleY = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
-	        }
-	    }
+	private void changeBallAngle(Ball1 ball1, GameObject gameObj) {
+        double ballCenter = ball1.getX() + (ball1.getWidth() / 2);
+        double paddleCenter = gameObj.getX() + (gameObj.getWidth() / 2);
+        double paddleWidth = gameObj.getWidth();
+        double paddleHalf = paddleWidth / 2.0;
+        double paddleQuarter = paddleWidth / 4.0;
+        double paddleFiveFourths = paddleQuarter * 5;
+        double ballOnPaddlePos = ballCenter - gameObj.getX();
+       
+        if (ballOnPaddlePos < 0) {
+            ballOnPaddlePos = 0;
+        }
+        if (ballOnPaddlePos > paddleWidth) {
+            ballOnPaddlePos = paddleWidth;
+        }
+       
+        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2);
+       
+        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter);
+       
+        if (ballCenter <= paddleCenter) {
+            if (!(gameObj instanceof Block)) {
+                ballDirX = -1;
+            }
+            ballAngleY = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
+        }
+        else {
+            if (!(gameObj instanceof Block)) {
+                ballDirX = 1;
+            }
+            ballAngleY = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
+	     }
+	  }
 	
 	private void nextLevel() {
 		this.inPlay = false;
