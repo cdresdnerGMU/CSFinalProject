@@ -58,8 +58,28 @@ public class Block implements GameObject {
     }
     
     public void blockHit() {
-    	blockHit = true;
-    	playGlassBreak();
+    	points -= 1;
+    	if (points == 4) {
+    		fillColor = Color.RED;
+    	}
+    	if (points == 3) {
+    		fillColor = Color.ORANGE;
+    	}
+    	if (points == 2) {
+    		fillColor = Color.GREEN;
+    	}
+    	if (points == 1) {
+    		fillColor = Color.YELLOW;
+    	}
+    	if (points < 1) {
+    		this.width = 0;
+        	this.height = 0;
+        	this.x = 0;
+        	this.y = 0;
+        	
+        	playGlassBreak();
+    	}
+    	
     }
     
     public boolean blockWasHit() {

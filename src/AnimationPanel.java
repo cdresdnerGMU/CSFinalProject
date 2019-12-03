@@ -20,6 +20,8 @@ import javax.swing.SwingUtilities;
 public class AnimationPanel extends JPanel implements MouseListener, MouseMotionListener {
 	
     private Ball1 ball1; //The primary ball (more balls may be added for power-ups)
+    private PowerUpBall tempBall1;
+    private PowerUpBall tempBall2;
     private Block[][] blocks; //2D array of blocks
     private Paddle paddle;  //The paddle which is moved using the mouse
     private int screenWidth; //The width of the screen
@@ -37,10 +39,12 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
      * @param paddle - The paddle which is moved using the mouse
      */
     public AnimationPanel(LayoutManager layout, int screenWidth, int screenHeight,
-    		Ball1 ball1, Block[][] blocks, Paddle paddle, Game game) {
+    		Ball1 ball1, PowerUpBall tempBall1, PowerUpBall tempBall2, Block[][] blocks, Paddle paddle, Game game) {
     	
         super(layout);
         this.ball1 = ball1;
+        this.tempBall1 = tempBall1;
+        this.tempBall2 = tempBall2;
         this.blocks = blocks;
         this.paddle = paddle;
         this.screenWidth  = screenWidth;
@@ -66,7 +70,13 @@ public class AnimationPanel extends JPanel implements MouseListener, MouseMotion
         g.fillRect((int)paddle.getX(), (int)paddle.getY(), (int)paddle.getWidth(), (int)paddle.getHeight()); //Fill a rectangle to create the paddle using the color set above
         
         g.setColor(ball1.getColor()); //Set the color for the ball
-        g.fillOval((int)ball1.getX(), (int)ball1.getY(), (int)ball1.getWidth(), (int)ball1.getHeight()); //Fill an oval (circle) to create the ball using the color set above
+        g.fillOval((int)ball1.getX(), (int)ball1.getY(), (int)ball1.getWidth(), (int)ball1.getHeight()); 
+        
+        /**g.setColor(tempBall1.getColor()); //Powerup ball1
+        g.fillOval((int)tempBall1.getX(), (int)tempBall1.getY(), (int)tempBall1.getWidth(), (int)tempBall1.getHeight());
+        
+        g.setColor(tempBall2.getColor()); //Powerup ball2
+        g.fillOval((int)tempBall2.getX(), (int)tempBall2.getY(), (int)tempBall2.getWidth(), (int)tempBall2.getHeight());**/
         
         for (int i = 0; i < blocks.length; i++) { //Loop through each row of blocks
 	     

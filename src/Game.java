@@ -19,13 +19,15 @@ public class Game implements Runnable {
 	
 	private static final Color[] ROW_COLORS = new Color[] {Color.RED, Color.RED, Color.ORANGE, Color.ORANGE, //The colors of every two rows of blocks
 			Color.GREEN, Color.GREEN, Color.YELLOW, Color.YELLOW};
-	private static final int[] ROW_POINTS = new int[] {7, 7, 5, 5, 3, 3, 1, 1}; //Sets the point values for each block row
+	private static final int[] ROW_POINTS = new int[] {4, 4, 3, 3, 2, 2, 1, 1}; //Sets the point values for each block row
 
 	private Paddle paddle;
 	private Ball1 ball1;
 	private AnimationPanel animationPanel;
 	private Block[][] blocks;
 	private int blockCount;
+	private PowerUpBall tempBall1;
+	private PowerUpBall tempBall2;
 	
 	private int lives = 3;
 	private int score = 0;
@@ -39,6 +41,7 @@ public class Game implements Runnable {
 	double ballXPos;
 	double ballAngleX = 3;
 	double ballAngleY = 3;
+	
 	
 	private Thread t = new Thread(this);
 	
@@ -99,7 +102,7 @@ public class Game implements Runnable {
         
         //Creates the animation panel
         animationPanel = 
-        		new AnimationPanel(new BorderLayout(), SCREEN_WIDTH, SCREEN_HEIGHT, ball1, blocks, paddle, this);
+        		new AnimationPanel(new BorderLayout(), SCREEN_WIDTH, SCREEN_HEIGHT, ball1, tempBall1, tempBall2, blocks, paddle, this);
        
         //Build the user interface framework
         buildGUI(animationPanel);
@@ -235,18 +238,7 @@ public class Game implements Runnable {
 	            	ball1.setCoordinates(-15, -15);
 	            	
 	            	if (lives == 0) {
-	            	      //default icon, custom title
-	                    int n = JOptionPane.showConfirmDialog(
-	                        frame,
-	                        "Would you like to play again?",
-	                        "Game Over",
-	                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-	                    if (n == JOptionPane.YES_OPTION) {
-	                    	newGame();
-	                    }
-	                    else {
-	                    	System.exit(0);
-	                    }
+	            		break;
 	            	}
 	            }
 			
@@ -297,7 +289,18 @@ public class Game implements Runnable {
                 interruptedException.printStackTrace(); //Throws an interrupted exception (this should not happen)
             }
         }
-
+      //default icon, custom title
+        int n = JOptionPane.showConfirmDialog(
+            frame,
+            "Would you like to play again?",
+            "Game Over",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (n == JOptionPane.YES_OPTION) {
+        	
+        }
+        else {
+        	System.exit(0);
+        }
 	}
 	
 	public int getLives() {
@@ -308,39 +311,39 @@ public class Game implements Runnable {
 		return score;
 	}
 	
-	private void changeBallAngle(Ball1 ball1, GameObject gameObj) {
-        double ballCenter = ball1.getX() + (ball1.getWidth() / 2);
-        double paddleCenter = gameObj.getX() + (gameObj.getWidth() / 2);
-        double paddleWidth = gameObj.getWidth();
-        double paddleHalf = paddleWidth / 2.0;
-        double paddleQuarter = paddleWidth / 4.0;
-        double paddleFiveFourths = paddleQuarter * 5;
-        double ballOnPaddlePos = ballCenter - gameObj.getX();
-       
-        if (ballOnPaddlePos < 0) {
-            ballOnPaddlePos = 0;
-        }
-        if (ballOnPaddlePos > paddleWidth) {
-            ballOnPaddlePos = paddleWidth;
-        }
-       
-        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2);
-       
-        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter);
-       
-        if (ballCenter <= paddleCenter) {
-            if (!(gameObj instanceof Block)) {
-                ballDirX = -1;
-            }
-            ballAngleY = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
-        }
-        else {
-            if (!(gameObj instanceof Block)) {
-                ballDirX = 1;
-            }
-            ballAngleY = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
-	     }
-	  }
+	 private void changeBallAngle(Ball1 ball1, GameObject gameObj) {
+	        double ballCenter = ball1.getX() + (ball1.getWidth() / 2);
+	        double paddleCenter = gameObj.getX() + (gameObj.getWidth() / 2);
+	        double paddleWidth = gameObj.getWidth();
+	        double paddleHalf = paddleWidth / 2.0;
+	        double paddleQuarter = paddleWidth / 4.0;
+	        double paddleFiveFourths = paddleQuarter * 5;
+	        double ballOnPaddlePos = ballCenter - gameObj.getX();
+	       
+	        if (ballOnPaddlePos < 0) {
+	            ballOnPaddlePos = 0;
+	        }
+	        if (ballOnPaddlePos > paddleWidth) {
+	            ballOnPaddlePos = paddleWidth;
+	        }
+	       
+	        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2);
+	       
+	        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter);
+	       
+	        if (ballCenter <= paddleCenter) {
+	            if (!(gameObj instanceof Block)) {
+	                ballDirX = -1;
+	            }
+	            ballAngleY = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
+	        }
+	        else {
+	            if (!(gameObj instanceof Block)) {
+	                ballDirX = 1;
+	            }
+	            ballAngleY = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
+	        }
+	    }
 	
 	private void nextLevel() {
 		this.inPlay = false;
@@ -354,14 +357,6 @@ public class Game implements Runnable {
         	}
         }
         blockCount = 112;
-	}
-	
-	private void newGame() {
-		level = 0;
-		score = 0;
-		lives = 3;
-		temp_score = 0;
-		nextLevel();
 	}
 	
 }
