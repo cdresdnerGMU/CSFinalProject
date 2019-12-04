@@ -331,16 +331,16 @@ public class Game implements Runnable {
         double paddleFiveFourths = paddleQuarter * 5;
         double ballOnPaddlePos = ballCenter - gameObj.getX();
        
-        if (ballOnPaddlePos < 0) {
+        if (ballOnPaddlePos < 0) { //Account for both sides of the panel
             ballOnPaddlePos = 0;
         }
-        if (ballOnPaddlePos > paddleWidth) {
+        if (ballOnPaddlePos > paddleWidth) { //Ensure that ballOnPaddlePos does not exceed paddleWidth
             ballOnPaddlePos = paddleWidth;
         }
        
-        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2);
+        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2); //The ball's main change in angle after bouncing
        
-        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter);
+        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter); //Allows the ball's speed to be controlled after changing angle
        
         if (ballCenter <= paddleCenter) {
             if (!(gameObj instanceof Block)) {
