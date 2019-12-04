@@ -306,7 +306,6 @@ public class Game implements Runnable {
 	}
 	
 	public int getLives() {
-
 		return lives;
 	}
 
@@ -320,10 +319,10 @@ public class Game implements Runnable {
 		double paddleHalf= gameObj.getWidth() / 2;
 		double ballOnPaddlePos = ballCenter - gameObj.getX();
 		
-		if (ballOnPaddlePos < 0) {
+		if (ballOnPaddlePos < 0) { //Accurately account for each side of the paddle
 			ballOnPaddlePos = 0;
 		}
-		if (ballOnPaddlePos > 60) {
+		if (ballOnPaddlePos > 60) { //ballOnPaddlePos cannot exceed the length of the paddle
 			ballOnPaddlePos = 60;
 		}
 		

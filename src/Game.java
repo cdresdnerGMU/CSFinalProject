@@ -371,10 +371,10 @@ public class Game implements Runnable {
 	}
 	
 	private void newGame() {
-		level = 0;
-		score = 0;
-		lives = 3;
-		temp_score = 0;
-		nextLevel();
+		level = 0; //Reset level
+		score = 0; //Reset score
+		lives = 3; //Reset lives
+		temp_score = 0; //Reset score towards extra lives
+		nextLevel(); //Initate nextLevel to reset the game
 	}
 }
