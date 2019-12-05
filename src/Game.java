@@ -109,7 +109,7 @@ public class Game implements Runnable {
         	xPos = 0; //Sets xPos back to 0 for a new row
         }
 
-        blocks[7][10].setFillColor(Color.MAGENTA);
+        blocks[7][10].setFillColor(Color.CYAN);
         Block testExtraBall = new Block(glass); //test power-up: extra balls
         testExtraBall.setCoordinates(60, 150);
         testExtraBall.setPoints(1);
@@ -330,7 +330,7 @@ public class Game implements Runnable {
 		                		temp_score += block.getPoints();
 
 		    	            	if (temp_score >= EXTRA_LIFE){
-		    	            		lives += 1; //every time the temp_score reaches 500, the lives is incremented by 1
+		    	            		lives += 1; //every time the temp_score reaches 100, the lives is incremented by 1
 		    	            		temp_score = temp_score - EXTRA_LIFE; //set back to 0
 
 								}
@@ -459,7 +459,7 @@ public class Game implements Runnable {
         		block.clearBlockHit();
         	}
         }
-        blockCount = 112;
+        blockCount = 280;
 	}
 	
 	private void newGame() {
