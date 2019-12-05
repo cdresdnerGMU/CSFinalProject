@@ -215,8 +215,12 @@ public class Game implements Runnable {
     public boolean inPlay() {
     	return inPlay;
     }
-    
+
+	/**
+	 * run the game
+	 */
 	@Override
+
 	public void run() {
 		
 		double lineY = paddle.getY() + paddle.getHeight() + 20;
@@ -338,8 +342,8 @@ public class Game implements Runnable {
                                     pBallYPos1 = ballYPos; //powerup balls originate from the original ball
                                     pBallXPos1 = ballXPos;
                                     pBallDirY1 = -ballDirY; //has to be negative because the normal ball's direction hasn't changed yet. (the bonus ball comes out first)
-                                    pBallDirX1 = -ballDirX;
-                                    pBallAngleX1 = ballAngleX*-.9;
+                                    pBallDirX1 = -ballDirX; //same as above but in x direction
+                                    pBallAngleX1 = ballAngleX*-.9; //slows down
                                     pBallAngleY1 = ballAngleY*-.5;
                                 }
 
@@ -406,15 +410,28 @@ public class Game implements Runnable {
         }
 
 	}
-	
+
+	/**
+	 * getter for live
+	 * @return return live count
+	 */
 	public int getLives() {
 		return lives;
 	}
 
+	/**
+	 * getter for score
+	 * @return score count
+	 */
 	public int getScore() {
 		return score;
 	}
-	
+
+	/**
+	 * changing of the Angle of the ball (both power ball and normal ball) when it hits a block or paddle to provide a little more control for the user
+	 * @param ball1 is the ball that hit another object (either block or paddle)
+	 * @param gameObj is the object that the ball has hit
+	 */
 	private void changeBallAngle(Ball1 ball1, GameObject gameObj) { //if a ball hits an object, call this method to change the ball angle depends where it hits on the object
 
         double ballCenter = ball1.getX() + (ball1.getWidth() / 2);
@@ -468,7 +485,10 @@ public class Game implements Runnable {
             }
         }
     }
-	
+
+	/**
+	 * once the blocks are cleared, it resets the board.
+	 */
 	private void nextLevel() {
 		this.inPlay = false;
     	ball1.setCoordinates(-15, -15);
@@ -482,7 +502,10 @@ public class Game implements Runnable {
         }
         blockCount = 280;
 	}
-	
+
+	/**
+	 * If the player wants to play a new game, it resets everything
+	 */
 	private void newGame() {
 		level = 0; //Reset level
 		score = 0; //Reset score
