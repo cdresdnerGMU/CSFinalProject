@@ -108,7 +108,8 @@ public class Game implements Runnable {
         	yPos += 15; //Increments yPos for a new row
         	xPos = 0; //Sets xPos back to 0 for a new row
         }
-
+        blocks[3][4].setFillColor(Color.MAGENTA);
+        blocks[2][9].setFillColor(Color.CYAN);
         blocks[7][10].setFillColor(Color.MAGENTA);
         Block testExtraBall = new Block(glass); //test power-up: extra balls
         testExtraBall.setCoordinates(60, 150);
