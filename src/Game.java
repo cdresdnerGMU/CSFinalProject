@@ -15,7 +15,7 @@ public class Game implements Runnable {
 	
 	private static final int SCREEN_WIDTH = 840; //The width of the screen
 	private static final int SCREEN_HEIGHT = 700; //The height of the screen
-	private static final int EXTRA_LIFE = 500;
+	private static final int EXTRA_LIFE = 100;
 	
 	private static final Color[] ROW_COLORS = new Color[] {Color.RED, Color.RED, Color.ORANGE, Color.ORANGE, //The colors of every two rows of blocks
 			Color.GREEN, Color.GREEN, Color.YELLOW, Color.YELLOW};
@@ -27,6 +27,7 @@ public class Game implements Runnable {
 	private Block[][] blocks;
 	private int blockCount;
 	private PowerUpBall pBall1;
+	private int ptempScore = 0;
 	
 	private int lives = 3;
 	private int score = 0;
@@ -107,6 +108,8 @@ public class Game implements Runnable {
         	yPos += 15; //Increments yPos for a new row
         	xPos = 0; //Sets xPos back to 0 for a new row
         }
+
+        blocks[7][10].setFillColor(Color.MAGENTA);
         Block testExtraBall = new Block(glass); //test power-up: extra balls
         testExtraBall.setCoordinates(60, 150);
         testExtraBall.setPoints(1);
@@ -115,8 +118,9 @@ public class Game implements Runnable {
         Block testPaddle = new Block(glass); //test power-up: increase paddle size
         testPaddle.setCoordinates(720, 150);
         testPaddle.setPoints(1);
-        testPaddle.setFillColor(Color.MAGENTA); //will be cyan later for paddle size!!
+        testPaddle.setFillColor(Color.CYAN);
         blocks[6][12] = testPaddle;
+        
         
         //Creates the animation panel
         animationPanel = 
@@ -260,6 +264,7 @@ public class Game implements Runnable {
 	            
 	            if (ball1.getY() >= lineY) { //Ball will reset to its default position and lives will be decremented when it hits the bottom of the screen
 	            	lives -= 1;
+	            	ptempScore = 0;
 	            	this.inPlay = false;
 	            	ball1.setCoordinates(-15, -15);
 	            	pBall1.setCoordinates(0, -1000); //removes powerup ball if game is over
@@ -284,9 +289,6 @@ public class Game implements Runnable {
 	            	}
 	            }
 	            
-			    if (score == EXTRA_LIFE) {
-			    	lives++;
-			    }
 	            if (score == EXTRA_LIFE) {
 	            	lives++;
 	            }
@@ -319,6 +321,9 @@ public class Game implements Runnable {
 	            		if (!block.blockWasHit()) {
 		            		Rectangle r1 = new Rectangle((int)block.getX(), (int)block.getY(), (int)block.getWidth(), (int)block.getHeight());
 		                    if (touches(r1, r2)) {
+		                    	if (score - ptempScore >= 5 && ptempScore != 0) { //the paddle powerup is viable for 5 brick breaks
+	    	            			paddle.powerDown();
+	    	            		}
 		    	            	changeBallAngle(ball1, block);
 		    	            	if (touchesBottom(r1, r2)) {
 		    	            		ballDirY = -1; 
@@ -336,23 +341,28 @@ public class Game implements Runnable {
 
 								}
 		    	            	if (block.getFillColor() == Color.MAGENTA) {
-		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the orignal ball
+		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the original ball
 		    	            		pBallXPos1 = ballXPos;
 		    	            		pBallDirY1 = ballDirY;
 		    		            	pBallDirX1 = ballDirX;
 		    		            	pBallAngleX1 = ballAngleX*-.9;
 		    		            	pBallAngleY1 = ballAngleY;
-		    	            		
 		    	            	}
+		    	            	
+		    	            	if (block.getFillColor() == Color.CYAN) {
+		    	            		paddle.powerUp(); //increases paddle size
+		    	            		ptempScore = score;
+		    	            	}
+		    	            	
 		                		block.blockHit();
 		                		blockCount -= 1;
 		                		if (blockCount <= 0) {
 		                			nextLevel();
 		                		}
 		                    }
-		                    if (touches(r1, p1)) { //checks for collision with the powerup ball
+		                    if (touches(r1, p1) && (pBallYPos1 != -1000)) { //checks for collision with the powerup ball
 		    	            	changeBallAngle(pBall1, block);
-		    	            	if (touchesBottom(p1, r2)) {
+		    	            	if (touchesBottom(r2, p1)) {
 		    	            		pBallDirY1 = -1; 
 		    	            	}
 		    	            	else {
@@ -374,7 +384,10 @@ public class Game implements Runnable {
 		    		            	pBallDirX1 = ballDirX;
 		    		            	pBallAngleX1 = ballAngleX*-.5; //multiplied so that the powerup follows a different path and isn't identical to ball1
 		    		            	pBallAngleY1 = ballAngleY;
-		    	            		
+		    	            	}
+		    	            	if (block.getFillColor() == Color.CYAN) {
+		    	            		paddle.powerUp(); //increases paddle size
+		    	            		ptempScore = score;
 		    	            	}
 		                		block.blockHit();
 		                		blockCount -= 1;
