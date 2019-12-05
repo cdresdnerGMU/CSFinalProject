@@ -289,9 +289,6 @@ public class Game implements Runnable {
 	            	}
 	            }
 	            
-	            if (score == EXTRA_LIFE) {
-	            	lives++;
-	            }
 				
 	            Rectangle p1 = new Rectangle((int)pBall1.getX(), (int)pBall1.getY(), (int)pBall1.getWidth(), (int)pBall1.getHeight()); //powerup ball hitbox
 	            if (touches(paddleHitbox, p1)) { //Ball reverses direction when it hits the paddle
@@ -311,9 +308,6 @@ public class Game implements Runnable {
 	            }
 	            
 			
-		    if (score == EXTRA_LIFE) {
-		    	lives++;
-		    }
 	            
 	            for (int j = 0; j < blocks.length; j++) { //Loop through each row of blocks
 	            	for (int k = 0; k < blocks[j].length; k++) { //Loop through each column of blocks
@@ -409,18 +403,7 @@ public class Game implements Runnable {
                 interruptedException.printStackTrace(); //Throws an interrupted exception (this should not happen)
             }
         }
-      //default icon, custom title
-        int n = JOptionPane.showConfirmDialog(
-            frame,
-            "Would you like to play again?",
-            "Game Over",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (n == JOptionPane.YES_OPTION) {
-        	
-        }
-        else {
-        	System.exit(0);
-        }
+
 	}
 	
 	public int getLives() {

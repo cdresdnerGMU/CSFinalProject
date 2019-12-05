@@ -72,10 +72,7 @@ public class Block implements GameObject {
     		fillColor = Color.YELLOW;
     	}
     	if (points < 1) {
-    		this.width = 0;
-        	this.height = 0;
-        	this.x = 0;
-        	this.y = 0;
+        	blockHit = true;
         	
         	playGlassBreak();
     	}
