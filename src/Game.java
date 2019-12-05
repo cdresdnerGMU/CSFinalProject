@@ -110,10 +110,13 @@ public class Game implements Runnable {
         	xPos = 0; //Sets xPos back to 0 for a new row
         }
         blocks[3][4].setFillColor(Color.MAGENTA);
+        blocks[3][4].setPoints(1);
         blocks[2][9].setFillColor(Color.CYAN);
+        blocks[2][9].setPoints(1);
         blocks[7][10].setFillColor(Color.MAGENTA);
         blocks[7][3].setFillColor(Color.CYAN);
         blocks[5][5].setFillColor(Color.CYAN);
+        blocks[5][5].setPoints(1);
         
         //Creates the animation panel
         animationPanel = 
@@ -287,6 +290,7 @@ public class Game implements Runnable {
 	            	pBallDirX1 = 0;
 	            	pBallAngleX1 = 0;
 	            	pBallAngleY1 = 0;
+	            	paddle.powerDown();
 	            	
 	            	if (lives == 0) {
 	            	      //default icon, custom title
@@ -334,11 +338,15 @@ public class Game implements Runnable {
                                     paddle.powerDown();
                                 }
                                 changeBallAngle(ball1, block);
-                                if (touchesSide(r1, r2)) {
+                                if (touchesSide(r1, r2) && touchesBottom(r1,r2)) {
+                                	ballDirY *= -1;
+                                	System.out.println("Touches corner");
+                                }
+                                else if (touchesSide(r1, r2)) {
                                 	ballDirX *= -1;
                                 	System.out.println("Touches side");
                                 }
-                                if (touchesBottom(r1, r2)) {
+                                else if (touchesBottom(r1, r2)) {
                                     ballDirY *= -1;
                                     System.out.println("Touches bottom");
                                 }
