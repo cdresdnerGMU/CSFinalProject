@@ -112,18 +112,8 @@ public class Game implements Runnable {
         blocks[3][4].setFillColor(Color.MAGENTA);
         blocks[2][9].setFillColor(Color.CYAN);
         blocks[7][10].setFillColor(Color.MAGENTA);
-        blocks[7][3].setFillColor(Color.MAGENTA);
-        Block testExtraBall = new Block(glass); //test power-up: extra balls
-        testExtraBall.setCoordinates(60, 150);
-        testExtraBall.setPoints(1);
-        testExtraBall.setFillColor(Color.YELLOW);
-        blocks[6][1] = testExtraBall;
-        Block testPaddle = new Block(glass); //test power-up: increase paddle size
-        testPaddle.setCoordinates(720, 150);
-        testPaddle.setPoints(1);
-        testPaddle.setFillColor(Color.CYAN);
-        blocks[6][12] = testPaddle;
-        
+        blocks[7][3].setFillColor(Color.CYAN);
+        blocks[5][5].setFillColor(Color.CYAN);
         
         //Creates the animation panel
         animationPanel = 
