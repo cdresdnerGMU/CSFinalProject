@@ -27,6 +27,14 @@ public class Paddle implements GameObject {
         y = newY;
     }
     
+    public void powerUp() {
+    	this.width = 100;
+    }
+    
+    public void powerDown() {
+    	this.width = 60;
+    }
+    
     Color getColor() {
     	return Color.BLUE;
     }
