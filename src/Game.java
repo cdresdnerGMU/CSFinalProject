@@ -184,16 +184,24 @@ public class Game implements Runnable {
         }
     }
     
-    private boolean touchesSide(Rectangle rBlock, Rectangle rBall) {
+    private boolean touchesLeft(Rectangle rBlock, Rectangle rBall) {
     	int rLength = (int) (rBlock.getWidth());
     	Rectangle left = new Rectangle((int)rBlock.getX(), (int)rBlock.getY(), 1, (int)rBlock.getHeight());
-    	Rectangle right = new Rectangle((int)rBlock.getX() + rLength - 1, (int)rBlock.getY(), 1, (int)rBlock.getHeight());
     	//generates two rectangles at the left + right most ends to caculate the hitboxes
     	if ((rBall.x <= left.x + left.width) && (rBall.x + rBall.width >= left.x) && 
         		(rBall.y <= left.y + left.height) && (rBall.y + rBall.height >= left.y)) {
         	return true;
         }
-    	else if ((rBall.x <= right.x + right.width) && (rBall.x + rBall.width >= right.x) && 
+    	else {
+    		return false;
+    	}
+    }
+    
+    public boolean touchesRight(Rectangle rBlock, Rectangle rBall) {
+    	int rLength = (int) (rBlock.getWidth());
+    	Rectangle right = new Rectangle((int)rBlock.getX() + rLength - 1, (int)rBlock.getY(), 1, (int)rBlock.getHeight());
+    	//generates two rectangles at the left + right most ends to caculate the hitboxes
+    	if ((rBall.x <= right.x + right.width) && (rBall.x + rBall.width >= right.x) && 
         		(rBall.y <= right.y + right.height) && (rBall.y + rBall.height >= right.y)) {
         	return true;
         }
@@ -338,21 +346,27 @@ public class Game implements Runnable {
                                     paddle.powerDown();
                                 }
                                 changeBallAngle(ball1, block);
-                                if (touchesSide(r1, r2) && touchesBottom(r1,r2)) {
-                                	ballDirY *= -1;
-                                	System.out.println("Touches corner");
+                                if (touchesRight(r1, r2)) { //checks collision with the right side of the block
+                                	if (touchesBottom(r1, r2)) { //checks for collision with the bottom of the block (corners)
+                                		ballDirY *= -1;
+                                	}
+                                	if (ballDirX < 0) {
+                                		ballDirX *= -1;
+                                	}
                                 }
-                                else if (touchesSide(r1, r2)) {
-                                	ballDirX *= -1;
-                                	System.out.println("Touches side");
+                                else if (touchesLeft(r1, r2)) {//checks collision with the left side of the block
+                                	if (touchesBottom(r1, r2)) {//checks for collision for the left corner
+                                		ballDirY *= -1;
+                                	}
+                                	if (ballDirX > 0) {
+                                		ballDirX *= -1;
+                                	}
                                 }
-                                else if (touchesBottom(r1, r2)) {
+                                else if (touchesBottom(r1, r2)) { //bounces off the bottom
                                     ballDirY *= -1;
-                                    System.out.println("Touches bottom");
                                 }
                                 else {
                                     ballDirY = 1;
-                                    System.out.println("Touches top");
                                 }
 
                                 score += 1;
@@ -385,13 +399,35 @@ public class Game implements Runnable {
                                 }
                             }
 		                    if (touches(r1, p1)){ //checks for collision with the powerup ball
-		    	            	changeBallAngle(pBall1, block);
-		    	            	if (touchesBottom(r2, p1)) {
-		    	            		pBallDirY1 = -1;
-		    	            	}
-		    	            	else {
-		    	            		pBallDirY1 = -1;
-		    	            	}
+		                    	changeBallAngle(pBall1, block);
+                                if (touchesRight(r1, p1)) {
+                                	if (touchesBottom(r1, p1)) {
+                                		System.out.println("Right corner");
+                                		pBallDirY1 *= -1;
+                                	}
+                                	if (pBallDirX1 < 0) {
+                                		pBallDirX1 *= -1;
+                                	}
+                                	System.out.println("Touches right");
+                                }
+                                else if (touchesLeft(r1, p1)) {
+                                	if (touchesBottom(r1, p1)) {
+                                		pBallDirY1 *= -1;
+                                		System.out.println("Left corner");
+                                	}
+                                	if (pBallDirX1 > 0) {
+                                		pBallDirX1 *= -1;
+                                	}
+                                	System.out.println("Touches left");
+                                }
+                                else if (touchesBottom(r1, p1)) {
+                                    pBallDirY1 *= -1;
+                                    System.out.println("Touches bottom");
+                                }
+                                else {
+                                    pBallDirY1 = 1;
+                                    System.out.println("Touches top");
+                                }
 		    	            	
 		                		score += 1;
 		                		temp_score += block.getPoints();
