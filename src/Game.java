@@ -114,7 +114,7 @@ public class Game implements Runnable {
         Block testExtraBall = new Block(glass); //test power-up: extra balls
         testExtraBall.setCoordinates(60, 150);
         testExtraBall.setPoints(1);
-        testExtraBall.setFillColor(Color.MAGENTA);
+        testExtraBall.setFillColor(Color.YELLOW);
         blocks[6][1] = testExtraBall;
         Block testPaddle = new Block(glass); //test power-up: increase paddle size
         testPaddle.setCoordinates(720, 150);
@@ -241,6 +241,9 @@ public class Game implements Runnable {
 				if(ball1.getX() <= 0) {//most left wall
 					ballDirX *= -1;
 				}
+                if (ballYPos <= 0) { //Ball reverses direction when it hits the ceiling
+                    ballDirY = -1;
+                }
 				pBallYPos1 -= (pBallAngleY1 * pBallDirY1); // since the top is 0, we have to decrement (It's weird)
 				pBallXPos1 += (pBallAngleX1 * pBallDirX1);// moving the ball in
 				pBall1.setCoordinates(pBallXPos1, pBallYPos1);// always start the ball at an angle.
@@ -250,12 +253,9 @@ public class Game implements Runnable {
 				if(pBall1.getX() <= 0) {//most left wall
 					pBallDirX1 *= -1;
 				}
-                if (ballYPos <= 0) { //Ball reverses direction when it hits the ceiling
-                    ballDirY = -1;
-                }
+
 	            
 	            Rectangle r2 = new Rectangle((int)ball1.getX(), (int)ball1.getY(), (int)ball1.getWidth(), (int)ball1.getHeight()); //ball hitbox
-                Rectangle r3 = new Rectangle((int)pBall1.getX(), (int)pBall1.getY(), (int)pBall1.getWidth(), (int)pBall1.getHeight());
 	            Rectangle paddleHitbox = new Rectangle((int)paddle.getX(), (int)paddle.getY(), (int)paddle.getWidth(), (int)paddle.getHeight());
 	            if (touches(paddleHitbox, r2)) { //Ball reverses direction when it hits the paddle
 	            	changeBallAngle(ball1, paddle);
@@ -337,7 +337,7 @@ public class Game implements Runnable {
                                 if (block.getFillColor() == Color.MAGENTA) {
                                     pBallYPos1 = ballYPos; //powerup balls originate from the original ball
                                     pBallXPos1 = ballXPos;
-                                    pBallDirY1 = -ballDirY;
+                                    pBallDirY1 = -ballDirY; //has to be negative because the normal ball's direction hasn't changed yet. (the bonus ball comes out first)
                                     pBallDirX1 = -ballDirX;
                                     pBallAngleX1 = ballAngleX*-.9;
                                     pBallAngleY1 = ballAngleY*-.5;
@@ -360,7 +360,7 @@ public class Game implements Runnable {
 		    	            		pBallDirY1 = -1;
 		    	            	}
 		    	            	else {
-		    	            		pBallDirY1 = 1;
+		    	            		pBallDirY1 = -1;
 		    	            	}
 		    	            	
 		                		score += 1;
@@ -370,10 +370,10 @@ public class Game implements Runnable {
 		    	            	if (block.getFillColor() == Color.MAGENTA) {
 		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the original ball
 		    	            		pBallXPos1 = ballXPos;
-		    	            		pBallDirY1 = ballDirY;
-		    		            	pBallDirX1 = ballDirX;
-		    		            	pBallAngleX1 = ballAngleX*-.5; //multiplied so that the powerup follows a different path and isn't identical to ball1
-		    		            	pBallAngleY1 = ballAngleY;
+		    	            		pBallDirY1 = -ballDirY;
+		    		            	pBallDirX1 = -ballDirX;
+		    		            	pBallAngleX1 = ballAngleX*-.9; //multiplied so that the powerup follows a different path and isn't identical to ball1
+		    		            	pBallAngleY1 = ballAngleY-.5;
 		    	            	}
 		    	            	if (block.getFillColor() == Color.CYAN) {
 		    	            		paddle.powerUp(); //increases paddle size
