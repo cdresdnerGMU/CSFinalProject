@@ -168,9 +168,10 @@ public class Game implements Runnable {
      * @param rBall - rectangle for the ball (hitbox)
      * @return
      */
-    private boolean touchesBottom(Rectangle rBlock, Rectangle rBall) {
-    	int rHeight = (int) (rBlock.getHeight() / 2);
-    	Rectangle bottomHalf = new Rectangle((int)rBlock.getX(), (int)rBlock.getY() + rHeight, (int)rBlock.getWidth(), rHeight);
+    private boolean touchesBottom(Rectangle rBlock, Rectangle rBall) { 
+    	int rHeight = (int) (rBlock.getHeight());
+    	Rectangle bottomHalf = new Rectangle((int)rBlock.getX(), (int)rBlock.getY() + rHeight, (int)rBlock.getWidth(), 1); //generates a rectangle of height 1
+    	//at the bottom of the rectangle, so the hitbot ONLY calculates for the bottom
         if ((rBall.x <= bottomHalf.x + bottomHalf.width) && (rBall.x + rBall.width >= bottomHalf.x) && 
         		(rBall.y <= bottomHalf.y + bottomHalf.height) && (rBall.y + rBall.height >= bottomHalf.y)) {
         	return true;
@@ -178,6 +179,24 @@ public class Game implements Runnable {
         else {
         	return false;
         }
+    }
+    
+    private boolean touchesSide(Rectangle rBlock, Rectangle rBall) {
+    	int rLength = (int) (rBlock.getWidth());
+    	Rectangle left = new Rectangle((int)rBlock.getX(), (int)rBlock.getY(), 1, (int)rBlock.getHeight());
+    	Rectangle right = new Rectangle((int)rBlock.getX() + rLength - 1, (int)rBlock.getY(), 1, (int)rBlock.getHeight());
+    	//generates two rectangles at the left + right most ends to caculate the hitboxes
+    	if ((rBall.x <= left.x + left.width) && (rBall.x + rBall.width >= left.x) && 
+        		(rBall.y <= left.y + left.height) && (rBall.y + rBall.height >= left.y)) {
+        	return true;
+        }
+    	else if ((rBall.x <= right.x + right.width) && (rBall.x + rBall.width >= right.x) && 
+        		(rBall.y <= right.y + right.height) && (rBall.y + rBall.height >= right.y)) {
+        	return true;
+        }
+    	else {
+    		return false;
+    	}
     }
     
     public boolean gameIsRunning() {
@@ -315,11 +334,17 @@ public class Game implements Runnable {
                                     paddle.powerDown();
                                 }
                                 changeBallAngle(ball1, block);
+                                if (touchesSide(r1, r2)) {
+                                	ballDirX *= -1;
+                                	System.out.println("Touches side");
+                                }
                                 if (touchesBottom(r1, r2)) {
-                                    ballDirY = -1;
+                                    ballDirY *= -1;
+                                    System.out.println("Touches bottom");
                                 }
                                 else {
                                     ballDirY = 1;
+                                    System.out.println("Touches top");
                                 }
 
                                 score += 1;
