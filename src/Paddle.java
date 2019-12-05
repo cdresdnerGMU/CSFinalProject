@@ -11,7 +11,7 @@ public class Paddle implements GameObject {
 
     /**
      * gets the x coord of the paddle
-     * @return the x coord
+     * @return the x coordinates
      */
     public double getX(){
         return x;
