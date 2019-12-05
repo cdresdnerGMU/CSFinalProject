@@ -47,8 +47,8 @@ public class Game implements Runnable {
 	double pBallAngleX1 = 0;
 	double pBallAngleY1 = 0;
 
-	double pBallYPos1 = -1000;
-	double pBallXPos1 = 0;
+	double pBallYPos1;
+	double pBallXPos1;
 
 	
 	private Thread t = new Thread(this);
@@ -92,6 +92,7 @@ public class Game implements Runnable {
     	
         ball1 = new Ball1(); //Creates the ball
         pBall1 = new PowerUpBall();
+        pBall1.powerDown();
         
         int xPos = 0; //Sets the x coordinate for the first block
         int yPos = 60; //Sets the y coordinate for the first block
@@ -111,6 +112,7 @@ public class Game implements Runnable {
         blocks[3][4].setFillColor(Color.MAGENTA);
         blocks[2][9].setFillColor(Color.CYAN);
         blocks[7][10].setFillColor(Color.MAGENTA);
+        blocks[7][3].setFillColor(Color.MAGENTA);
         Block testExtraBall = new Block(glass); //test power-up: extra balls
         testExtraBall.setCoordinates(60, 150);
         testExtraBall.setPoints(1);
@@ -271,7 +273,7 @@ public class Game implements Runnable {
 	            	ptempScore = 0;
 	            	this.inPlay = false;
 	            	ball1.setCoordinates(-15, -15);
-	            	pBall1.setCoordinates(1000, -1000); //removes powerup ball if game is over
+	            	pBall1.powerDown();//hides the power up ball
 	            	pBallDirY1 = 0;
 	            	pBallDirX1 = 0;
 	            	pBallAngleX1 = 0;
@@ -339,6 +341,7 @@ public class Game implements Runnable {
 
                                 }
                                 if (block.getFillColor() == Color.MAGENTA) {
+                                	pBall1.powerOn();
                                     pBallYPos1 = ballYPos; //powerup balls originate from the original ball
                                     pBallXPos1 = ballXPos;
                                     pBallDirY1 = -ballDirY; //has to be negative because the normal ball's direction hasn't changed yet. (the bonus ball comes out first)
@@ -372,6 +375,7 @@ public class Game implements Runnable {
 
 
 		    	            	if (block.getFillColor() == Color.MAGENTA) {
+		    	            		pBall1.powerOn(); //turns on the power up visibitily
 		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the original ball
 		    	            		pBallXPos1 = ballXPos;
 		    	            		pBallDirY1 = -ballDirY;
@@ -385,7 +389,7 @@ public class Game implements Runnable {
 		    	            	}
 		                		block.blockHit();
 		                		blockCount -= 1;
-		                		if (blockCount <= 0) {
+		                		if (blockCount <= 0) { //if all the blocks have been hit, proceed to the next level
 		                			nextLevel();
 
 		                		}

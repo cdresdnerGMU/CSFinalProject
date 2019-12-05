@@ -6,8 +6,8 @@ import java.awt.Color;
 public class Ball1 implements GameObject {
     private double x = -15;
     private double y = -15;
-    private double width = 10;
-    private double height = 10;
+    protected double width = 10;
+    protected double height = 10;
 
     /**
      * gets the x coordinate of the ball
