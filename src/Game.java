@@ -109,7 +109,7 @@ public class Game implements Runnable {
         	xPos = 0; //Sets xPos back to 0 for a new row
         }
 
-        blocks[7][10].setFillColor(Color.CYAN);
+        blocks[7][10].setFillColor(Color.MAGENTA);
         Block testExtraBall = new Block(glass); //test power-up: extra balls
         testExtraBall.setCoordinates(60, 150);
         testExtraBall.setPoints(1);
@@ -222,7 +222,6 @@ public class Game implements Runnable {
 		
 
 		// i made two different dirs for X and Y b/c if it hits a wall, the Xdir will change but Ydir shouldn't..
-		// but if it hits top, both dir should change? maybe theres a better way to do this.
         ballDirX = 1.0;
         int maxX = SCREEN_WIDTH;
         //Initial loop to generate ball movement (Temporary; this just moves the ball in a straight line)
@@ -250,24 +249,24 @@ public class Game implements Runnable {
 				if(pBall1.getX() <= 0) {//most left wall
 					pBallDirX1 *= -1;
 				}
+                if (ballYPos <= 0) { //Ball reverses direction when it hits the ceiling
+                    ballDirY = -1;
+                }
 	            
 	            Rectangle r2 = new Rectangle((int)ball1.getX(), (int)ball1.getY(), (int)ball1.getWidth(), (int)ball1.getHeight()); //ball hitbox
+                Rectangle r3 = new Rectangle((int)pBall1.getX(), (int)pBall1.getY(), (int)pBall1.getWidth(), (int)pBall1.getHeight());
 	            Rectangle paddleHitbox = new Rectangle((int)paddle.getX(), (int)paddle.getY(), (int)paddle.getWidth(), (int)paddle.getHeight());
 	            if (touches(paddleHitbox, r2)) { //Ball reverses direction when it hits the paddle
 	            	changeBallAngle(ball1, paddle);
 	            	ballDirY = 1;
 	            }
-	            
-	            if (ballYPos <= 0) { //Ball reverses direction when it hits the ceiling
-	            	ballDirY = -1;
-	            }
-	            
+
 	            if (ball1.getY() >= lineY) { //Ball will reset to its default position and lives will be decremented when it hits the bottom of the screen
 	            	lives -= 1;
 	            	ptempScore = 0;
 	            	this.inPlay = false;
 	            	ball1.setCoordinates(-15, -15);
-	            	pBall1.setCoordinates(0, -1000); //removes powerup ball if game is over
+	            	pBall1.setCoordinates(1000, -1000); //removes powerup ball if game is over
 	            	pBallDirY1 = 0;
 	            	pBallDirX1 = 0;
 	            	pBallAngleX1 = 0;
@@ -295,12 +294,12 @@ public class Game implements Runnable {
 	            	changeBallAngle(pBall1, paddle);
 	            	pBallDirY1 = 1;
 	            }
-	            
+
 	            if (pBallYPos1 <= 0) { //Ball reverses direction when it hits the ceiling
 	            	pBallDirY1 = -1;
 	            }
-	            if (pBall1.getY() >= lineY) { //Powerup goes away when it hits the bottom
-	            	pBall1.setCoordinates(-1000, 0);
+	            if (pBall1.getY() >= lineY || ball1.getY() >= lineY) { //Powerup goes away when it hits the bottom or when the original ball hits the bottom
+	            	pBall1.setCoordinates(-1000, 1000);
 	            	pBallDirY1 = 0;
 	            	pBallDirX1 = 0;
 	            	pBallAngleX1 = 0;
@@ -314,50 +313,50 @@ public class Game implements Runnable {
 	            		Block block = blocks[j][k];
 	            		if (!block.blockWasHit()) {
 		            		Rectangle r1 = new Rectangle((int)block.getX(), (int)block.getY(), (int)block.getWidth(), (int)block.getHeight());
-		                    if (touches(r1, r2)) {
-		                    	if (score - ptempScore >= 5 && ptempScore != 0) { //the paddle powerup is viable for 5 brick breaks
-	    	            			paddle.powerDown();
-	    	            		}
-		    	            	changeBallAngle(ball1, block);
-		    	            	if (touchesBottom(r1, r2)) {
-		    	            		ballDirY = -1; 
-		    	            	}
-		    	            	else {
-		    	            		ballDirY = 1;
-		    	            	}
-		    	            	
-		                		score += 1;
-		                		temp_score += block.getPoints();
+                            if (touches(r1, r2)) {
+                                if (score - ptempScore >= 5 && ptempScore != 0) { //the paddle powerup is viable for 5 brick breaks
+                                    paddle.powerDown();
+                                }
+                                changeBallAngle(ball1, block);
+                                if (touchesBottom(r1, r2)) {
+                                    ballDirY = -1;
+                                }
+                                else {
+                                    ballDirY = 1;
+                                }
 
-		    	            	if (temp_score >= EXTRA_LIFE){
-		    	            		lives += 1; //every time the temp_score reaches 100, the lives is incremented by 1
-		    	            		temp_score = temp_score - EXTRA_LIFE; //set back to 0
+                                score += 1;
+                                temp_score += block.getPoints();
 
-								}
-		    	            	if (block.getFillColor() == Color.MAGENTA) {
-		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the original ball
-		    	            		pBallXPos1 = ballXPos;
-		    	            		pBallDirY1 = ballDirY;
-		    		            	pBallDirX1 = ballDirX;
-		    		            	pBallAngleX1 = ballAngleX*-.9;
-		    		            	pBallAngleY1 = ballAngleY;
-		    	            	}
-		    	            	
-		    	            	if (block.getFillColor() == Color.CYAN) {
-		    	            		paddle.powerUp(); //increases paddle size
-		    	            		ptempScore = score;
-		    	            	}
-		    	            	
-		                		block.blockHit();
-		                		blockCount -= 1;
-		                		if (blockCount <= 0) {
-		                			nextLevel();
-		                		}
-		                    }
-		                    if (touches(r1, p1) && (pBallYPos1 != -1000)) { //checks for collision with the powerup ball
+                                if (temp_score >= EXTRA_LIFE){
+                                    lives += 1; //every time the temp_score reaches 100, the lives is incremented by 1
+                                    temp_score = temp_score - EXTRA_LIFE; //set back to 0
+
+                                }
+                                if (block.getFillColor() == Color.MAGENTA) {
+                                    pBallYPos1 = ballYPos; //powerup balls originate from the original ball
+                                    pBallXPos1 = ballXPos;
+                                    pBallDirY1 = -ballDirY;
+                                    pBallDirX1 = -ballDirX;
+                                    pBallAngleX1 = ballAngleX*-.9;
+                                    pBallAngleY1 = ballAngleY*-.5;
+                                }
+
+                                if (block.getFillColor() == Color.CYAN) {
+                                    paddle.powerUp(); //increases paddle size
+                                    ptempScore = score;
+                                }
+
+                                block.blockHit();
+                                blockCount -= 1;
+                                if (blockCount <= 0) {
+                                    nextLevel();
+                                }
+                            }
+		                    if (touches(r1, p1)){ //checks for collision with the powerup ball
 		    	            	changeBallAngle(pBall1, block);
 		    	            	if (touchesBottom(r2, p1)) {
-		    	            		pBallDirY1 = -1; 
+		    	            		pBallDirY1 = -1;
 		    	            	}
 		    	            	else {
 		    	            		pBallDirY1 = 1;
@@ -366,11 +365,7 @@ public class Game implements Runnable {
 		                		score += 1;
 		                		temp_score += block.getPoints();
 
-		    	            	if (temp_score >= EXTRA_LIFE){
-		    	            		lives += 1; //every time the temp_score reaches 500, the lives is incremented by 1
-		    	            		temp_score = temp_score - EXTRA_LIFE; //set back to 0
 
-								}
 		    	            	if (block.getFillColor() == Color.MAGENTA) {
 		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the original ball
 		    	            		pBallXPos1 = ballXPos;
@@ -387,7 +382,12 @@ public class Game implements Runnable {
 		                		blockCount -= 1;
 		                		if (blockCount <= 0) {
 		                			nextLevel();
+
 		                		}
+                                if (temp_score >= EXTRA_LIFE) {
+                                    lives += 1;
+                                    temp_score = temp_score - EXTRA_LIFE;
+                                }
 		                    }
 	            		}
 	            	}
@@ -414,7 +414,8 @@ public class Game implements Runnable {
 		return score;
 	}
 	
-	private void changeBallAngle(Ball1 ball1, GameObject gameObj) {
+	private void changeBallAngle(Ball1 ball1, GameObject gameObj) { //if a ball hits an object, call this method to change the ball angle depends where it hits on the object
+
         double ballCenter = ball1.getX() + (ball1.getWidth() / 2);
         double paddleCenter = gameObj.getX() + (gameObj.getWidth() / 2);
         double paddleWidth = gameObj.getWidth();
@@ -422,29 +423,48 @@ public class Game implements Runnable {
         double paddleQuarter = paddleWidth / 4.0;
         double paddleFiveFourths = paddleQuarter * 5;
         double ballOnPaddlePos = ballCenter - gameObj.getX();
-       
+
         if (ballOnPaddlePos < 0) { //Account for both sides of the panel
             ballOnPaddlePos = 0;
         }
         if (ballOnPaddlePos > paddleWidth) { //Ensure that ballOnPaddlePos does not exceed paddleWidth
             ballOnPaddlePos = paddleWidth;
         }
-       
-        ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2); //The ball's main change in angle after bouncing
-       
-        ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter); //Allows the ball's speed to be controlled after changing angle
-       
-        if (ballCenter <= paddleCenter) {
-            if (!(gameObj instanceof Block)) {
-                ballDirX = -1;
+
+        if (ball1 instanceof PowerUpBall){ //check if its a powerball or normal ball
+            pBallAngleX1 = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2); //The ball's main change in angle after bouncing
+
+            pBallAngleY1 = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter); //Allows the ball's speed to be controlled after changing angle
+
+            if (ballCenter <= paddleCenter) {
+                if (!(gameObj instanceof Block)) {
+                    pBallDirX1 = -1;
+                }
+                pBallAngleY1 = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
             }
-            ballAngleY = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
+            else {
+                if (!(gameObj instanceof Block)) {
+                    pBallDirX1 = 1;
+                }
+                pBallAngleY1 = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
+            }
         }
-        else {
-            if (!(gameObj instanceof Block)) {
-                ballDirX = 1;
+        else { //regular ball
+            ballAngleX = Math.abs((ballOnPaddlePos - paddleHalf) * 0.2); //The ball's main change in angle after bouncing
+
+            ballAngleY = Math.abs((ballOnPaddlePos + paddleHalf) / paddleQuarter); //Allows the ball's speed to be controlled after changing angle
+
+            if (ballCenter <= paddleCenter) {
+                if (!(gameObj instanceof Block)) {
+                    ballDirX = -1;
+                }
+                ballAngleY = Math.abs((paddleQuarter + ballOnPaddlePos) / paddleQuarter);
+            } else {
+                if (!(gameObj instanceof Block)) {
+                    ballDirX = 1;
+                }
+                ballAngleY = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
             }
-            ballAngleY = Math.abs((paddleFiveFourths - ballOnPaddlePos) / paddleQuarter);
         }
     }
 	
@@ -465,7 +485,7 @@ public class Game implements Runnable {
 	private void newGame() {
 		level = 0; //Reset level
 		score = 0; //Reset score
-		lives = 3; //Reset lives
+		lives = 3; //increment life by one
 		temp_score = 0; //Reset score towards extra lives
 		nextLevel(); //Initate nextLevel to reset the game
 	}
