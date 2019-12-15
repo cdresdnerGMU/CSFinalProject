@@ -1,7 +1,8 @@
 import java.awt.Color;
 
 /**
- * getters and setters for the paddle characteristics
+ * This class initializes the paddle - the game piece controlled by the mouse and prevents the ball from hitting the
+ * bottom of the screen.
  */
 public class Paddle implements GameObject {
     private double x = 5;

@@ -1,6 +1,10 @@
 import java.awt.Color;
 import javax.sound.sampled.Clip;
 
+/**
+ * This class initializes the blocks - the game pieces that will be struck and destroyed by the ball in order to
+ * accumulate points.
+ */
 public class Block implements GameObject {
     private double x = 5;
     private double y = 5;
@@ -11,6 +15,10 @@ public class Block implements GameObject {
     Color fillColor;
     int points;
     
+    /**
+     * Initializes the sound clip played by a block when it is destroyed
+     * @param glass the sound clip
+     */
     public Block(Clip glass) {
     	this.glass = glass;
     }
