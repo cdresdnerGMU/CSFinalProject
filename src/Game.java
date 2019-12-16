@@ -109,8 +109,8 @@ public class Game implements Runnable {
         	yPos += 15; //Increments yPos for a new row
         	xPos = 0; //Sets xPos back to 0 for a new row
         }
-        blocks[3][4].setFillColor(Color.MAGENTA);
-        blocks[3][4].setPoints(1);
+        blocks[3][4].setFillColor(Color.MAGENTA); //creates powerup blocks
+        blocks[3][4].setPoints(1); //corrects the health of the block if != 1
         blocks[2][9].setFillColor(Color.CYAN);
         blocks[2][9].setPoints(1);
         blocks[7][10].setFillColor(Color.MAGENTA);
@@ -183,11 +183,15 @@ public class Game implements Runnable {
         	return false;
         }
     }
-    
+    /**
+     * This method checks if the ball touches the left side of a block
+     * @param rBlock - rectangle for the block
+     * @param rBall - rectangle for the ball (hitbox)
+     * @return true if there's collision
+     */
     private boolean touchesLeft(Rectangle rBlock, Rectangle rBall) {
-    	int rLength = (int) (rBlock.getWidth());
     	Rectangle left = new Rectangle((int)rBlock.getX(), (int)rBlock.getY(), 1, (int)rBlock.getHeight());
-    	//generates two rectangles at the left + right most ends to caculate the hitboxes
+    	//generates a rectangle at the left most end to calculate side collision
     	if ((rBall.x <= left.x + left.width) && (rBall.x + rBall.width >= left.x) && 
         		(rBall.y <= left.y + left.height) && (rBall.y + rBall.height >= left.y)) {
         	return true;
@@ -196,11 +200,16 @@ public class Game implements Runnable {
     		return false;
     	}
     }
-    
-    public boolean touchesRight(Rectangle rBlock, Rectangle rBall) {
+    /**
+     * This method checks if the ball touches the right side of a block
+     * @param rBlock - rectangle for the block
+     * @param rBall - rectangle for the ball (hitbox)
+     * @return true if there's collision
+     */
+    private boolean touchesRight(Rectangle rBlock, Rectangle rBall) {
     	int rLength = (int) (rBlock.getWidth());
     	Rectangle right = new Rectangle((int)rBlock.getX() + rLength - 1, (int)rBlock.getY(), 1, (int)rBlock.getHeight());
-    	//generates two rectangles at the left + right most ends to caculate the hitboxes
+    	//generates a rectangle at the right most end to calculate side collision
     	if ((rBall.x <= right.x + right.width) && (rBall.x + rBall.width >= right.x) && 
         		(rBall.y <= right.y + right.height) && (rBall.y + rBall.height >= right.y)) {
         	return true;
@@ -379,7 +388,7 @@ public class Game implements Runnable {
                                 }
                                 if (block.getFillColor() == Color.MAGENTA) {
                                 	pBall1.powerOn();
-                                    pBallYPos1 = ballYPos; //powerup balls originate from the original ball
+                                    pBallYPos1 = ballYPos; //power-up balls originate from the original ball
                                     pBallXPos1 = ballXPos;
                                     pBallDirY1 = -ballDirY; //has to be negative because the normal ball's direction hasn't changed yet. (the bonus ball comes out first)
                                     pBallDirX1 = -ballDirX; //same as above but in x direction
@@ -402,31 +411,25 @@ public class Game implements Runnable {
 		                    	changeBallAngle(pBall1, block);
                                 if (touchesRight(r1, p1)) {
                                 	if (touchesBottom(r1, p1)) {
-                                		System.out.println("Right corner");
                                 		pBallDirY1 *= -1;
                                 	}
                                 	if (pBallDirX1 < 0) {
                                 		pBallDirX1 *= -1;
                                 	}
-                                	System.out.println("Touches right");
                                 }
                                 else if (touchesLeft(r1, p1)) {
                                 	if (touchesBottom(r1, p1)) {
                                 		pBallDirY1 *= -1;
-                                		System.out.println("Left corner");
                                 	}
                                 	if (pBallDirX1 > 0) {
                                 		pBallDirX1 *= -1;
                                 	}
-                                	System.out.println("Touches left");
                                 }
                                 else if (touchesBottom(r1, p1)) {
                                     pBallDirY1 *= -1;
-                                    System.out.println("Touches bottom");
                                 }
                                 else {
                                     pBallDirY1 = 1;
-                                    System.out.println("Touches top");
                                 }
 		    	            	
 		                		score += 1;
@@ -434,7 +437,7 @@ public class Game implements Runnable {
 
 
 		    	            	if (block.getFillColor() == Color.MAGENTA) {
-		    	            		pBall1.powerOn(); //turns on the power up visibitily
+		    	            		pBall1.powerOn(); //turns on the power up visibility
 		    	            		pBallYPos1 = ballYPos; //powerup balls originate from the original ball
 		    	            		pBallXPos1 = ballXPos;
 		    	            		pBallDirY1 = -ballDirY;
